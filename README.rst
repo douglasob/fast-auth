@@ -1,9 +1,9 @@
-Simple Auth FastAPI
+Fast Auth
 ===================
 
 
 Facilita implementação de um sistema de autenticação básico e uso de uma
-sessão de banco de dados em projetos com FastAPi.
+sessão de banco de dados em projetos com tFastAPi.
 
 
 Instalação e configuração
@@ -11,10 +11,10 @@ Instalação e configuração
 
 Instale usando pip ou seu o gerenciador de ambiente da sua preferencia:
 
-    pip install simple-auth-fastapi
+    pip install fast-auth
 
 As configurações desta lib são feitas a partir de variáveis de ambiente.
-Para facilitar a leitura dessas informações o simple-auth-fastapi
+Para facilitar a leitura dessas informações o fast_auth
 procura no diretório inicial(pasta onde o uvicorn ou gunicorn é chamado
 iniciando o serviço web) o arquivo .env e faz a leitura dele.
 
@@ -28,7 +28,7 @@ Abaixo temos todas as variáveis de ambiente necessárias e em seguida a expliç
 
 - CONNECTION_STRING: Necessário para a conexão com o banco de dados. Gerealmente seguem o formato
   dialect+driver://username:password@host:port/database. O driver deve ser um que suporte execuções
-  assíncronas como asyncpg para PostgreSQL, asyncmy para MySQL, para o SQLite o simple-auth-fastapi
+  assíncronas como asyncpg para PostgreSQL, asyncmy para MySQL, para o SQLite o fast_auth
   já trás o aiosqlite.
 
 - SECRET_KEY: Para gerar e decodificar o token JWT é preciso ter uma chave secreta, que como o nome
@@ -69,7 +69,7 @@ a partir de uma path operation basta seguir o exemplo abaixo::
 
     from fastapi import FastAPI, Depends
     from sqlalchemy.ext.asyncio import AsyncSession
-    from simple_auth_fastapi import connection_database, get_db
+    from fast_auth import connection_database, get_db
 
     connection_database()
 
@@ -85,7 +85,7 @@ Explicando o que foi feito acima, a função connection_database estabelece cone
 passando a CONNECTION_STRING para o SQLAlchemy, mais especificamente para a função
 create_async_engine.
 No path operation passamos a função get_db como dependencia, sendo ele um generator que retorna
-uma sessão assincrona já instanciada, basta utilizar conforme necessário e o simple_auth_fastapi mais o
+uma sessão assincrona já instanciada, basta utilizar conforme necessário e o fast_auth mais o
 prório fastapi ficam responsáveis por encerrar a sessão depois que a requisição é retornada.
 
 
@@ -97,7 +97,7 @@ Abaixo um exemplo de rota para authenticação::
     from fastapi import FastAPI, Depends
     from pydantic import BaseModel
     from sqlalchemy.ext.asyncio import AsyncSession
-    from simple_auth_fastapi import connection_database, authenticate, create_token_jwt
+    from fast_auth import connection_database, authenticate, create_token_jwt
 
     connection_database()
 
@@ -118,7 +118,7 @@ Abaixo um exemplo de rota para authenticação::
 
 A função authenticate é responsável por buscar no banco de dados o usuário informado
 e checar se a senha confere, se estiver correto o usuário(objeto do tipo User que está
-em simple_auth_fastapi.models) é retornado o qual deve ser passado como parâmetro para a 
+em fast_auth.models) é retornado o qual deve ser passado como parâmetro para a 
 função create_token_jwt que gera e retorna o token. No token fica salvo por padrão o id 
 e o username do usuário, caso necessário, pode ser passado um dict como parametro com
 informações adicionais para serem empacotadas junto.
@@ -132,7 +132,7 @@ O exemplo a seguir demonstra uma rota que só pode ser acessada por um usuário 
     from fastapi import FastAPI, Depends
     from pydantic import BaseModel
     from sqlalchemy.ext.asyncio import AsyncSession
-    from simple_auth_fastapi import connection_database, require_auth
+    from fast_auth import connection_database, require_auth
 
     connection_database()
 
