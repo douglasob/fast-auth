@@ -5,6 +5,7 @@ from .database import connect as connect_database
 from .auth.crypt import create_token_jwt
 from .auth.auth import get_token_payload as require_auth
 from .auth.auth import authenticate
+from .utils import models_to_dict, model_to_dict
 
 import logging
 from os import path, environ
