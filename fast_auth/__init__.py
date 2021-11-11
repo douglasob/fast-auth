@@ -1,4 +1,4 @@
-__version__ = '0.1.0'
+__version__ = "0.1.0"
 
 from .database import get_db
 from .database import connect as connect_database
@@ -12,9 +12,8 @@ from os import path, environ
 from dotenv import load_dotenv
 
 current_dir = path.abspath(path.curdir)
-env_file = path.join(current_dir, '.env')
+env_file = path.join(current_dir, ".env")
 load_dotenv(env_file)
 
-if 'SECRET_KEY' not in environ:
-    logging.warning(
-        '\033[93mSECRET_KEY not found in environment variables!\033[93m')
+if "SECRET_KEY" not in environ:
+    logging.warning("\033[93mSECRET_KEY not found in environment variables!\033[93m")

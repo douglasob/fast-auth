@@ -11,13 +11,13 @@ from sqlalchemy import select
 
 from .crypt import decode_token_jwt, pwd_context
 
-oauth2_scheme = OAuth2PasswordBearer('/login')
+oauth2_scheme = OAuth2PasswordBearer("/login")
 
 
 def get_token_payload(token: str = Depends(oauth2_scheme)):
     try:
         payload = decode_token_jwt(token)
-        del payload['exp']
+        del payload["exp"]
         return payload
     except:
         credentials_exception = HTTPException(
@@ -29,15 +29,15 @@ def get_token_payload(token: str = Depends(oauth2_scheme)):
 
 
 async def get_user_groups(user: User):
-    query = '''
+    query = """
         select ag.id, ag.name
             from auth_groups ag
                 inner join auth_users_groups aug on aug.auth_group_id = ag.id
             where aug.auth_user_id = :user_id
-    '''
+    """
 
     async with get_session() as session:
-        groups = await session.execute(query, {'user_id': user.id})
+        groups = await session.execute(query, {"user_id": user.id})
         dict_groups = [dict(g) for g in groups]
         return dict_groups
 
@@ -62,16 +62,17 @@ async def authenticate(username, password) -> User:
 async def _create_user(user: User):
     async with get_session() as session:
         session.add(user)
-        await session .commit()
+        await session.commit()
 
 
 def create_user_cli():
     from fast_auth.database import connect
+
     engine, _ = connect()
 
     os_user = os.getlogin()
-    print('')
-    username = input(f'Username [{os_user}]: ')
+    print("")
+    username = input(f"Username [{os_user}]: ")
     username = username if username else os_user
     password = getpass()
 

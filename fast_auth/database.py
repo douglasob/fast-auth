@@ -11,11 +11,18 @@ def connect(connection_string=None, echo=False):
     global _engine, _SessionLocal
 
     if connection_string is None:
-        connection_string = environ.get('CONNECTION_STRING', 'sqlite+aiosqlite:///./test.db')
+        connection_string = environ.get(
+            "CONNECTION_STRING", "sqlite+aiosqlite:///./test.db"
+        )
 
     _engine = create_async_engine(connection_string, echo=echo)
-    _SessionLocal = sessionmaker(bind=_engine, autocommit=False,
-                                 autoflush=False, expire_on_commit=False, class_=AsyncSession)
+    _SessionLocal = sessionmaker(
+        bind=_engine,
+        autocommit=False,
+        autoflush=False,
+        expire_on_commit=False,
+        class_=AsyncSession,
+    )
     return _engine, _SessionLocal
 
 
