@@ -54,3 +54,23 @@ async def test_error_token_jwt():
 
         response = await client.get('authenticated')
         assert response.status_code == 401
+
+
+@pytest.mark.utils
+def test_model_dict():
+    from fast_auth.models import User
+    from fast_auth.utils import model_to_dict
+
+    user = User(username='teste', password='123')
+    user_dict = model_to_dict(user)
+    assert isinstance(user_dict, dict) 
+
+
+@pytest.mark.utils
+def test_models_dict():
+    from fast_auth.models import User
+    from fast_auth.utils import models_to_dict
+
+    users = [User(username='teste', password='123'), User(username='teste', password='123')]
+    users_dict = models_to_dict(users)
+    assert isinstance(users_dict, list)
