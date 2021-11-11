@@ -1,5 +1,5 @@
+import logging
 from os import environ
-
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
@@ -27,7 +27,8 @@ async def get_db():
     db: AsyncSession = _SessionLocal()
     try:
         yield db
-    except:
+    except Exception as error:
+        logging.warn(str(error))
         await db.rollback()
         await db.close()
     finally:
