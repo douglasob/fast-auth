@@ -1,6 +1,7 @@
 import logging
 from os import environ
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
 _engine = None
@@ -12,7 +13,7 @@ def connect(connection_string=None, echo=False):
 
     if connection_string is None:
         connection_string = environ.get(
-            "CONNECTION_STRING", "sqlite+aiosqlite:///./test.db"
+            'CONNECTION_STRING', 'sqlite+aiosqlite:///./test.db'
         )
 
     _engine = create_async_engine(connection_string, echo=echo)

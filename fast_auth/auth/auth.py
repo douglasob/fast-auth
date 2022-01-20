@@ -5,25 +5,26 @@ from getpass import getpass
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy import select
+
 from fast_auth.database import get_session
 from fast_auth.models import User
-from sqlalchemy import select
 
 from .crypt import decode_token_jwt, pwd_context
 
-oauth2_scheme = OAuth2PasswordBearer("/login")
+oauth2_scheme = OAuth2PasswordBearer('/login')
 
 
 def get_token_payload(token: str = Depends(oauth2_scheme)):
     try:
         payload = decode_token_jwt(token)
-        del payload["exp"]
+        del payload['exp']
         return payload
     except:
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
+            detail='Could not validate credentials',
+            headers={'WWW-Authenticate': 'Bearer'},
         )
         raise credentials_exception
 
@@ -37,7 +38,7 @@ async def get_user_groups(user: User):
     """
 
     async with get_session() as session:
-        groups = await session.execute(query, {"user_id": user.id})
+        groups = await session.execute(query, {'user_id': user.id})
         dict_groups = [dict(g) for g in groups]
         return dict_groups
 
@@ -71,8 +72,8 @@ def create_user_cli():
     engine, _ = connect()
 
     os_user = os.getlogin()
-    print("")
-    username = input(f"Username [{os_user}]: ")
+    print('')
+    username = input(f'Username [{os_user}]: ')
     username = username if username else os_user
     password = getpass()
 

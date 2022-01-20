@@ -1,4 +1,5 @@
 from os import path
+
 from dotenv import load_dotenv
 
 current_dir = path.abspath(path.curdir)

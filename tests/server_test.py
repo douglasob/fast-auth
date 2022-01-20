@@ -1,8 +1,14 @@
-from fastapi import FastAPI, Depends
+from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from fast_auth import authenticate, create_token_jwt, require_auth, connect_database, get_db
+from fast_auth import (
+    authenticate,
+    connect_database,
+    create_token_jwt,
+    get_db,
+    require_auth,
+)
 
 connect_database()
 
